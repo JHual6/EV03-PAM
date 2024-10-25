@@ -39,4 +39,17 @@
       <mat-icon style="color: #F5F5DC;">qr_code</mat-icon>
     </button>
   </div>
+
+
+  <div *ngIf="rol === 'administrador'">
+    <ion-button (click)="paginaUsuarios()">Administrar usuarios</ion-button>
+  </div>
+
+  <div *ngIf="rol === 'profesor'">
+    <ion-button (click)="handleAsignaturaClick(1)">Asignatura 1</ion-button>
+    <ion-button (click)="handleAsignaturaClick(2)">Asignatura 2</ion-button>
+    <ion-button (click)="handleAsignaturaClick(3)">Asignatura 3</ion-button>
+    <ion-button (click)="handleAsignaturaClick(4)">Asignatura 4</ion-button>
+  </div>
+
 </ion-content>
