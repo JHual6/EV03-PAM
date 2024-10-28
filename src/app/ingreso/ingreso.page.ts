@@ -20,42 +20,44 @@ export class IngresoPage implements OnInit {
     private authService: AutenticacionService 
   ) { }
 
-  login() {
+  async login() {
     this.errorMessage = "";
 
-    this.storageService.getUsuarios().then(usuarios => {
-      const usuarioEncontrado = usuarios?.find(user => user.nombre === this.username);
+    const usuarios = await this.storageService.getUsuarios();
+    const usuarioEncontrado = usuarios?.find(user => user.nombre === this.username);
 
-      if (usuarioEncontrado && usuarioEncontrado.contrasena === this.password) {
-        // Llamar a iniciarSesion pasando solo el nombre del usuario
-        this.authService.iniciarSesion(usuarioEncontrado.nombre);
+    if (usuarioEncontrado && usuarioEncontrado.contrasena === this.password) {
+        const loginExitoso = await this.authService.iniciarSesion(usuarioEncontrado.nombre);
         
-        this.router.navigate(['/inicio'], { queryParams: { username: this.username } });
-        
-      } else if (!usuarioEncontrado) {
+        if (loginExitoso) {
+            this.router.navigate(['/inicio'], { queryParams: { username: this.username } });
+        } else {
+            this.errorMessage = "No se pudo iniciar sesión, por favor intente de nuevo.";
+        }
+    } else if (!usuarioEncontrado) {
         this.errorMessage = "El usuario no existe";
-      } else {
+    } else {
         this.errorMessage = "Contraseña incorrecta";
-      }
-    });
+    }
   }
 
-  async ngOnInit() {
+async ngOnInit() {
+  await this.storageService.init();
 
-    const contrasenaJona = await this.storageService.getContrasena('jona');
-    if (!contrasenaJona) {
-      await this.storageService.addUsuario('jona', 'jona123', 'estudiante');
-    }
-  
-    const contrasenaProfesor = await this.storageService.getContrasena('profesor');
-    if (!contrasenaProfesor) {
-      await this.storageService.addUsuario('profesor', 'profesor123', 'profesor');
-    }
-    
-    const contrasenaAdmin = await this.storageService.getContrasena('admin1');
-    if (!contrasenaAdmin) {
-      await this.storageService.addUsuario('admin1', 'admin123', 'administrador');
-    }
-
+  const contrasenaJona = await this.storageService.getContrasena('jona');
+  if (!contrasenaJona) {
+    await this.storageService.addUsuario('jona', 'jona123', 'estudiante');
   }
+
+  const contrasenaProfesor = await this.storageService.getContrasena('profesor');
+  if (!contrasenaProfesor) {
+    await this.storageService.addUsuario('profesor', 'profesor123', 'profesor');
+  }
+
+  const contrasenaAdmin = await this.storageService.getContrasena('admin1');
+  if (!contrasenaAdmin) {
+    await this.storageService.addUsuario('admin1', 'admin123', 'administrador');
+  }
+}
+
 }

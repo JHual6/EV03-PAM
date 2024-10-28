@@ -6,31 +6,33 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-
-  private apiUrl = 'https://api.qrserver.com/v1/read-qr-code/';
+  private apiUrl = 'https://api.qrserver.com/v1';
 
   constructor(private http: HttpClient) {}
 
-  // Send the base64 image to the API for decoding
+  // Send base64 image to API for decoding
   readQrCode(imageData: string): Observable<any> {
     const formData = new FormData();
-    const blob = this.dataURItoBlob(imageData);  // Convert base64 to Blob
+    const blob = this.dataURItoBlob(imageData);
     formData.append('file', blob, 'image.png');
 
-    return this.http.post(this.apiUrl, formData);
+    return this.http.post(`${this.apiUrl}/read-qr-code/`, formData);
   }
 
-  // Utility function to convert Base64 to Blob
+  // Generate a QR code from text or URL
+  generateQrCode(data: string): Observable<Blob> {
+    const url = `${this.apiUrl}/create-qr-code/?data=${encodeURIComponent(data)}&size=200x200`;
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
   private dataURItoBlob(dataURI: string): Blob {
     const byteString = atob(dataURI.split(',')[1]);
     const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
     const ab = new ArrayBuffer(byteString.length);
     const ia = new Uint8Array(ab);
     for (let i = 0; i < byteString.length; i++) {
       ia[i] = byteString.charCodeAt(i);
     }
-
     return new Blob([ab], { type: mimeString });
   }
 }

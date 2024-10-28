@@ -1,10 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Usuarios</ion-title>
+    <ion-title class="titulo" style="color: #F8B415;">Duoc<b style="color: #001B35;">UC</b></ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="fondo-usuarios">
+  <div class="usuarios-titulo">
+    <label>Usuarios</label>
+  </div>
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Usuarios</ion-title>
@@ -24,9 +27,12 @@
       <ion-col size="3">{{ usuario.contrasena }}</ion-col>
       <ion-col size="3">{{ usuario.rol }}</ion-col>
       <ion-col size="3">
-        <ion-button (click)="editarUsuario(usuario)">Editar</ion-button>
-        <ion-button color="danger" (click)="eliminarUsuario(usuario)">Eliminar</ion-button>
+        <ion-button (click)="editarUsuario(usuario)"><ion-icon name="build-outline"></ion-icon></ion-button>
+        <ion-button color="danger" (click)="eliminarUsuario(usuario)"><ion-icon name="trash-outline"></ion-icon></ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
+  <div>
+    <ion-button class="boton-agregar" expand="full" (click)="agregarUsuario()"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+  </div>
 </ion-content>

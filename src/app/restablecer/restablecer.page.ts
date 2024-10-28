@@ -22,66 +22,56 @@ export class RestablecerPage implements OnInit {
     const password = await this.storageService.getContrasena(this.username);
   
     if (password) {
-      // Solicitar al usuario la nueva contraseña
-      const alert = await this.alertController.create({
-        header: 'Restablecer contraseña',
-        inputs: [
-          {
-            name: 'newPassword',
-            type: 'password',
-            placeholder: 'Nueva contraseña',
-            attributes: {
-              minlength: 6
-            }
-          },
-          {
-            name: 'confirmPassword',
-            type: 'password',
-            placeholder: 'Confirmar nueva contraseña',
-            attributes: {
-              minlength: 6
-            }
-          }
-        ],
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-            handler: () => {
-              console.log('Cambio de contraseña cancelado');
-            }
-          },
-          {
-            text: 'Aceptar',
-            handler: async (data) => {
-              if (data.newPassword === data.confirmPassword && data.newPassword.length >= 6) {
-                // Llamar al método para actualizar la contraseña
-                const updated = await this.storageService.updateContrasena(this.username, data.newPassword);
-                
-                if (updated) {
-                  const successAlert = await this.alertController.create({
-                    header: 'Contraseña actualizada',
-                    message: 'Tu contraseña ha sido cambiada exitosamente.',
-                    buttons: ['OK']
-                  });
-                  
-                  await successAlert.present();
-                  await successAlert.onDidDismiss();
-                  this.router.navigate(['/']);
-                } else {
-                  this.errorMessage = 'No se pudo actualizar la contraseña.';
+        // Solicitar al usuario la nueva contraseña
+        const alert = await this.alertController.create({
+            header: 'Restablecer contraseña',
+            inputs: [
+                {
+                    name: 'newPassword',
+                    type: 'password',
+                    placeholder: 'Nueva contraseña',
+                    attributes: { minlength: 6 }
+                },
+                {
+                    name: 'confirmPassword',
+                    type: 'password',
+                    placeholder: 'Confirmar nueva contraseña',
+                    attributes: { minlength: 6 }
                 }
-              } else {
-                this.errorMessage = 'Las contraseñas no coinciden o son demasiado cortas.';
-              }
-            }
-          }
-        ]
-      });
+            ],
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel'
+                },
+                {
+                    text: 'Aceptar',
+                    handler: async (data) => {
+                        if (data.newPassword === data.confirmPassword && data.newPassword.length >= 6) {
+                            const updated = await this.storageService.updateContrasena(this.username, data.newPassword);
+                            if (updated) {
+                                const successAlert = await this.alertController.create({
+                                    header: 'Contraseña actualizada',
+                                    message: 'Tu contraseña ha sido cambiada exitosamente.',
+                                    buttons: ['OK']
+                                });
+                                await successAlert.present();
+                                await successAlert.onDidDismiss();
+                                this.router.navigate(['/']);
+                            } else {
+                                this.errorMessage = 'No se pudo actualizar la contraseña.';
+                            }
+                        } else {
+                            this.errorMessage = 'Las contraseñas no coinciden o son demasiado cortas.';
+                        }
+                    }
+                }
+            ]
+        });
 
-      await alert.present();
+        await alert.present();
     } else {
-      this.errorMessage = "El usuario no existe";
+        this.errorMessage = "El usuario no existe";
     }
   }
 

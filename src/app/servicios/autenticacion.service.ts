@@ -22,11 +22,13 @@ export class AutenticacionService {
 
 
     // Método para iniciar sesión
-    async iniciarSesion(nombreUsuario: string) {
+    async iniciarSesion(nombreUsuario: string): Promise<boolean> {
         this.usuarioLogueado = true;
         // Obtener el rol del usuario desde el StorageService pasando el nombre de usuario
-        this.rolUsuario = await this.storageService.getRol(nombreUsuario); 
+        this.rolUsuario = await this.storageService.getRol(nombreUsuario);
+        return this.rolUsuario !== null;  // Retorna true si el rol existe, false si no
     }
+
 
     // Método para cerrar sesión
     cerrarSesion() {

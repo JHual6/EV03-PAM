@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="titulo" style="color: #F8B415;">Duoc<b style="color: #001B35;">UC</b></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="fondoAsignatura">
+  <div class="spinner-grid">
+    <div class="spinner-container">
+      <h1>Asignatura 4</h1>
+      <p>Asistencia del curso:</p>
+      <div class="spinner-wrapper">
+        <mat-progress-spinner class="custom-spinner" mode="determinate" [value]="80"></mat-progress-spinner>
+        <div class="spinner-text">{{ 90 }}%</div>
+      </div>    
+    </div>
+  </div>
+
+  <div class="qr-generator">
+    <ion-input #inputText placeholder="Ingrese la fecha"></ion-input>
+    <ion-button class="boton-generar-qr" expand="full" (click)="generateQrCode(inputText)">
+      Generar QR
+    </ion-button>
+  </div>
+
+  <div *ngIf="qrCodeData" class="qr-code-container">
+    <img [src]="qrCodeData" alt="Código QR generado" />
+  </div>
+</ion-content>

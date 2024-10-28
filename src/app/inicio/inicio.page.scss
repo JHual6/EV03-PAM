@@ -7,20 +7,30 @@ ion-toolbar {
     font-weight: bold;
 }
 .fondo {
-    background-image: url('../../assets/img/fondo.jpg');
     background-size: cover;
     background-position: center;
     --background: none;
 }
+/* Fondos específicos por rol */
+.fondo-estudiante {
+    background-image: url('../../assets/img/fondoalumno.png');
+}
+.fondo-profesor {
+    background-image: url('../../assets//img/fondoprofesor.png');
+}
+.fondo-administrador {
+    background-image: url('../../assets/img/fondoadmin.png');
+}
+
 .bienvenida{
     margin-top: 30px;
     text-align: center;
-    color: #F5F5DC;
+    color: #ffffff;
     font-size: 30px;
     margin-bottom: 30px;
 }
 .nombre{
-    color: #c2c297;
+    color: #dccaca;
     font-size: 30px;
     font-weight: bold;
 }
@@ -40,13 +50,13 @@ ion-toolbar {
   text-align: center;
 }
 .spinner-container h5{
-    color: #F5F5DC;
+    color: #ffffff;
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 0;
 }
 .spinner-container p{
-    color: #F5F5DC;
+    color: #ffffff;
     font-size: 14px;
 }
 .mat-icon{
@@ -60,9 +70,34 @@ ion-toolbar {
     margin-top: 20px;
     margin-bottom: 10px;
     h4{
-        color: #F5F5DC;
+        color: #ffffff;
     }
 }
 .boton-qr{
     background: none;
 }   
+.boton-container {
+    display: flex;
+    justify-content: center;
+    width: 100%; 
+    margin-top: 20px; 
+    margin-bottom: 40px; 
+    margin-top: 40px;
+}
+
+.boton-administrar {
+    --background: black !important;
+    --color: white !important;
+    width: 90% !important;
+}
+.botones-asignaturas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    ion-button{
+        color: white;
+        --background: #058d00;
+        width: 80%;
+        margin-bottom: 1rem;
+    }
+}

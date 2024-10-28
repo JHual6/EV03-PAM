@@ -1,48 +1,49 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { ApiService } from '../servicios/api.service'; 
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
-import { StorageService } from '../servicios/storage.service'; // Importar el servicio de almacenamiento
-import { AutenticacionService } from '../servicios/autenticacion.service'; // Importar el servicio de autenticación
-import { Router } from '@angular/router';
+import { StorageService } from '../servicios/storage.service';
+import { AutenticacionService } from '../servicios/autenticacion.service';
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
-  styleUrls: ['./inicio.page.scss'],    
+  styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage implements OnInit {
 
   username: string = "";
-  rol: string = ""; // Variable para almacenar el rol del usuario
+  rol: string = "";
+  fondoClase: string = 'fondo'; // Variable para la clase de fondo
 
   constructor(
-    private route: ActivatedRoute, 
-    private alertController: AlertController, 
-    private apiService: ApiService, 
+    private route: ActivatedRoute,
+    private alertController: AlertController,
+    private apiService: ApiService,
     private barcodeScanner: BarcodeScanner,
-    private storageService: StorageService, // Inyectar el servicio de almacenamiento
-    private authService: AutenticacionService, // Inyectar el servicio de autenticación
-    private router: Router // Inyectar el router
+    private storageService: StorageService,
+    private authService: AutenticacionService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params['username']) {
         this.username = params['username'];
-        this.obtenerRol(this.username); // Obtener el rol cuando se cargue el componente
+        this.obtenerRol(this.username);
       }
     });
   }
 
   async obtenerRol(username: string) {
     try {
-      const rol = await this.storageService.getRol(username); // Obtener el rol desde el servicio
+      const rol = await this.storageService.getRol(username);
+      console.log('Rol obtenido:', rol);
       if (rol) {
-        this.rol = rol; // Guardar el rol en la variable
-        console.log('Rol del usuario:', this.rol);
+        this.rol = rol;
+        this.setFondoClase(); // Establecer la clase de fondo según el rol
       } else {
         const alert = await this.alertController.create({
           header: 'Error',
@@ -62,13 +63,19 @@ export class InicioPage implements OnInit {
     }
   }
 
-  async paginaUsuarios() {
-    const userRole = this.authService.getRolUsuario();
-    if (userRole === 'administrador') {
-      this.router.navigate(['/usuarios']);
-    } else {
-      console.error('No tienes permisos de administrador');
-      this.router.navigate(['/no-existe']);
+  setFondoClase() {
+    switch (this.rol) {
+      case 'estudiante':
+        this.fondoClase = 'fondo fondo-estudiante';
+        break;
+      case 'profesor':
+        this.fondoClase = 'fondo fondo-profesor';
+        break;
+      case 'administrador':
+        this.fondoClase = 'fondo fondo-administrador';
+        break;
+      default:
+        this.fondoClase = 'fondo';
     }
   }
 
@@ -94,8 +101,105 @@ export class InicioPage implements OnInit {
       await alert.present();
     }
   }
-  handleAsignaturaClick(asignatura: number) {
-    // Lógica para manejar el clic en una asignatura
-    console.log('Botón de Asignatura ' + asignatura + ' presionado.');
+
+  async paginaUsuarios() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en paginaUsuarios:', userRole); // Log adicional
+  
+    if (userRole === 'administrador') {
+      this.router.navigate(['/usuarios']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
+  }
+
+  async navegarAsignatura1() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en navegarAsignatura1:', userRole);
+  
+    if (userRole === 'profesor') {
+      this.router.navigate(['/asignatura1']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
+  }
+  async navegarAsignatura2() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en navegarAsignatura2:', userRole);
+  
+    if (userRole === 'profesor') {
+      this.router.navigate(['/asignatura2']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
+  }
+  async navegarAsignatura3() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en navegarAsignatura3:', userRole);
+  
+    if (userRole === 'profesor') {
+      this.router.navigate(['/asignatura3']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
+  }
+  async navegarAsignatura4() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en navegarAsignatura4:', userRole);
+  
+    if (userRole === 'profesor') {
+      this.router.navigate(['/asignatura4']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
+  }
+  async navegarEstudianteAsignatura1() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en estudiante/asignatura1:', userRole);
+  
+    if (userRole === 'estudiante') {
+      this.router.navigate(['/estudiante/asignatura1']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
+  }
+  async navegarEstudianteAsignatura2() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en estudiante/asignatura2:', userRole);
+  
+    if (userRole === 'estudiante') {
+      this.router.navigate(['/estudiante/asignatura2']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
+  }
+  async navegarEstudianteAsignatura3() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en estudiante/asignatura3:', userRole);
+  
+    if (userRole === 'estudiante') {
+      this.router.navigate(['/estudiante/asignatura3']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
+  }
+  async navegarEstudianteAsignatura4() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en estudiante/asignatura4:', userRole);
+  
+    if (userRole === 'estudiante') {
+      this.router.navigate(['/estudiante/asignatura4']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
   }
 }

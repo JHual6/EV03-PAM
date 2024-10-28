@@ -4,52 +4,58 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="fondo">
+<ion-content [fullscreen]="true" [ngClass]="fondoClase">
   <div class="bienvenida">
     <label>Bienvenido</label>
     <br>
     <label class="nombre" for="username">{{ username }}</label>
+    <div *ngIf="rol === 'administrador'">
+      <br>
+      <label>¿Qué desea realizar hoy?</label>
+    </div>
+    <div *ngIf="rol === 'profesor'">
+      <br>
+      <label>Asignaturas impartidas:</label>
+    </div>
+    <div *ngIf="rol === 'estudiante'">
+      <br>
+      <label>Sus asignaturas:</label>
+    </div>
   </div>
 
-  <div class="spinner-grid">
-    <div class="spinner-container">
+  <div class="spinner-grid" *ngIf="rol === 'estudiante'">
+    <div class="spinner-container" (click)="navegarEstudianteAsignatura1()">
       <h5>Asignatura 1</h5>
       <p>90%</p>
       <mat-progress-spinner mode="determinate" [value]="90" color="accent"></mat-progress-spinner>
     </div>
-    <div class="spinner-container">
+    <div class="spinner-container" (click)="navegarEstudianteAsignatura2()">
       <h5>Asignatura 2</h5>
       <p>80%</p>
       <mat-progress-spinner mode="determinate" [value]="80" color="accent"></mat-progress-spinner>
     </div>
-    <div class="spinner-container">
+    <div class="spinner-container" (click)="navegarEstudianteAsignatura3()">
       <h5>Asignatura 3</h5>
       <p>85%</p>
       <mat-progress-spinner mode="determinate" [value]="85" color="accent"></mat-progress-spinner>
     </div>
-    <div class="spinner-container">
+    <div class="spinner-container" (click)="navegarEstudianteAsignatura4()">
       <h5>Asignatura 4</h5>
       <p>70%</p>
       <mat-progress-spinner mode="determinate" [value]="70" color="warn"></mat-progress-spinner>
     </div>
   </div>
-  <div class="button-container">
-    <h4>Escanear QR:</h4>
-    <button mat-fab extended class="boton-qr" (click)="escanearQR()">
-      <mat-icon style="color: #F5F5DC;">qr_code</mat-icon>
-    </button>
+
+  <div class="botones-asignaturas" *ngIf="rol === 'profesor'">
+    <ion-button (click)="navegarAsignatura1()" expand="full">Asignatura 1</ion-button>
+    <ion-button (click)="navegarAsignatura2()" expand="full">Asignatura 2</ion-button>
+    <ion-button (click)="navegarAsignatura3()" expand="full">Asignatura 3</ion-button>
+    <ion-button (click)="navegarAsignatura4()" expand="full">Asignatura 4</ion-button>
   </div>
 
-
-  <div *ngIf="rol === 'administrador'">
-    <ion-button (click)="paginaUsuarios()">Administrar usuarios</ion-button>
+  <div *ngIf="rol === 'administrador'" class="boton-container">
+    <ion-button expand="full" (click)="paginaUsuarios()" class="boton-administrar" style="border-radius: 20px;">
+      Administrar usuarios
+    </ion-button>
   </div>
-
-  <div *ngIf="rol === 'profesor'">
-    <ion-button (click)="handleAsignaturaClick(1)">Asignatura 1</ion-button>
-    <ion-button (click)="handleAsignaturaClick(2)">Asignatura 2</ion-button>
-    <ion-button (click)="handleAsignaturaClick(3)">Asignatura 3</ion-button>
-    <ion-button (click)="handleAsignaturaClick(4)">Asignatura 4</ion-button>
-  </div>
-
 </ion-content>
