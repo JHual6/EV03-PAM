@@ -17,7 +17,7 @@ ion-toolbar {
     background-size: cover;
     background-position: center;
     --background: none;
-    background-image: url('./../../../assets/img/fondoalumno.png');
+    background-image: url('./../../assets/img/fondoalumno.png');
 }
 .spinner-grid {
     display: flex;
@@ -68,3 +68,20 @@ mat-progress-spinner{
     width: 200px !important;
     height: 200px !important;
 }
+.leer-qr {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    h4{
+        color: #ffffff;
+    }
+    .mat-icon{
+        font-size: 120px;
+        overflow: visible;
+        width: 100px;
+    }
+}
+.boton-qr{
+    background: none;
+}   

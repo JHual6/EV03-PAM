@@ -8,6 +8,7 @@ import { Asignatura1PageRoutingModule } from './asignatura1-routing.module';
 
 import { Asignatura1Page } from './asignatura1.page';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FormsModule,
     IonicModule,
     MatProgressSpinnerModule, 
-    Asignatura1PageRoutingModule
+    Asignatura1PageRoutingModule, 
+    MatIconModule  
   ],
   declarations: [Asignatura1Page]
 })

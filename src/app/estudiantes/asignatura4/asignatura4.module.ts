@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { Asignatura4PageRoutingModule } from './asignatura4-routing.module';
 
 import { Asignatura4Page } from './asignatura4.page';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    Asignatura4PageRoutingModule
+    MatProgressSpinnerModule, 
+    Asignatura4PageRoutingModule, 
+    MatIconModule  
   ],
   declarations: [Asignatura4Page]
 })
