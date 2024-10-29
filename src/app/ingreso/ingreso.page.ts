@@ -19,7 +19,7 @@ export class IngresoPage implements OnInit {
     private storageService: StorageService,
     private authService: AutenticacionService 
   ) { }
-
+  // Función para hacer el login del usuario
   async login() {
     this.errorMessage = "";
 
@@ -40,24 +40,24 @@ export class IngresoPage implements OnInit {
         this.errorMessage = "Contraseña incorrecta";
     }
   }
+  // Función para crear los usuarios por defecto (SOLO PARA EJEMPLOS DE USO, MENOS EL ADMIN)
+  async ngOnInit() {
+    await this.storageService.init();
 
-async ngOnInit() {
-  await this.storageService.init();
+    const contrasenaJona = await this.storageService.getContrasena('jona');
+    if (!contrasenaJona) {
+      await this.storageService.addUsuario('jona', 'jona123', 'estudiante');
+    }
 
-  const contrasenaJona = await this.storageService.getContrasena('jona');
-  if (!contrasenaJona) {
-    await this.storageService.addUsuario('jona', 'jona123', 'estudiante');
+    const contrasenaProfesor = await this.storageService.getContrasena('profesor');
+    if (!contrasenaProfesor) {
+      await this.storageService.addUsuario('profesor', 'profesor123', 'profesor');
+    }
+
+    const contrasenaAdmin = await this.storageService.getContrasena('admin1');
+    if (!contrasenaAdmin) {
+      await this.storageService.addUsuario('admin1', 'admin123', 'administrador');
+    }
   }
-
-  const contrasenaProfesor = await this.storageService.getContrasena('profesor');
-  if (!contrasenaProfesor) {
-    await this.storageService.addUsuario('profesor', 'profesor123', 'profesor');
-  }
-
-  const contrasenaAdmin = await this.storageService.getContrasena('admin1');
-  if (!contrasenaAdmin) {
-    await this.storageService.addUsuario('admin1', 'admin123', 'administrador');
-  }
-}
 
 }

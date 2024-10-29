@@ -11,7 +11,6 @@ export class AutenticacionGuard implements CanActivate {
 
   constructor(private authService: AutenticacionService, private router: Router){}
 
-  // Método de filtrado para acceder a las rutas
   canActivate(): boolean{
     if(this.authService.getLogueado()){
       return true;

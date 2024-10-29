@@ -14,11 +14,11 @@ export class UsuariosPage implements OnInit {
     private storageService: StorageService,
     private alertController: AlertController
   ) {}
-
+  // Cuando se cargue la página se muestren todos los usuarios
   async ngOnInit() {
     this.usuarios = await this.storageService.getUsuarios();
   }
-
+  // Función para agregar un usuario
   async agregarUsuario() {
     const alert = await this.alertController.create({
       header: 'Agregar Usuario',
@@ -48,14 +48,14 @@ export class UsuariosPage implements OnInit {
           text: 'Agregar',
           handler: async (data) => {
             await this.storageService.addUsuario(data.nombre, data.contrasena, data.rol);
-            this.usuarios = await this.storageService.getUsuarios(); // Actualiza la lista de usuarios
+            this.usuarios = await this.storageService.getUsuarios(); 
           }
         }
       ]
     });
     await alert.present();
   }
-
+  // Función para editar un usuario
   async editarUsuario(usuario: any) {
     const alert = await this.alertController.create({
       header: 'Editar Usuario',
@@ -88,14 +88,14 @@ export class UsuariosPage implements OnInit {
           text: 'Guardar',
           handler: async (data) => {
             await this.storageService.updateUsuario(usuario.nombre, data.nombre, data.contrasena, data.rol);
-            this.usuarios = await this.storageService.getUsuarios(); // Actualiza la lista de usuarios
+            this.usuarios = await this.storageService.getUsuarios(); 
           }
         }
       ]
     });
     await alert.present();
   }
-
+  // Función para eliminar un usuario
   async eliminarUsuario(usuario: any) {
     const alert = await this.alertController.create({
       header: 'Eliminar Usuario',
@@ -109,7 +109,7 @@ export class UsuariosPage implements OnInit {
           text: 'Eliminar',
           handler: async () => {
             await this.storageService.deleteUsuario(usuario.nombre);
-            this.usuarios = await this.storageService.getUsuarios(); // Actualiza la lista de usuarios
+            this.usuarios = await this.storageService.getUsuarios(); 
           }
         }
       ]

@@ -16,7 +16,7 @@ export class Asignatura1Page implements OnInit {
 
   ngOnInit() {
   }
-
+  // Función para escanear los códigos QR
   async escanearQR() {
     try {
       const image = await Camera.getPhoto({

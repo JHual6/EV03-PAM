@@ -18,11 +18,11 @@ export class RestablecerPage implements OnInit {
 
   ngOnInit() {}
 
+  // Función para restablecer la contraseña 
   async resetPassword() {
     const password = await this.storageService.getContrasena(this.username);
   
     if (password) {
-        // Solicitar al usuario la nueva contraseña
         const alert = await this.alertController.create({
             header: 'Restablecer contraseña',
             inputs: [

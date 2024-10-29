@@ -16,7 +16,7 @@ export class InicioPage implements OnInit {
 
   username: string = "";
   rol: string = "";
-  fondoClase: string = 'fondo'; // Variable para la clase de fondo
+  fondoClase: string = 'fondo';
 
   constructor(
     private route: ActivatedRoute,
@@ -27,7 +27,7 @@ export class InicioPage implements OnInit {
     private authService: AutenticacionService,
     private router: Router
   ) { }
-
+  // Función para obtener el nombre del usuario al iniciar la página
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params['username']) {
@@ -36,14 +36,14 @@ export class InicioPage implements OnInit {
       }
     });
   }
-
+  // Función para obtener ell rol del usuario
   async obtenerRol(username: string) {
     try {
       const rol = await this.storageService.getRol(username);
       console.log('Rol obtenido:', rol);
       if (rol) {
         this.rol = rol;
-        this.setFondoClase(); // Establecer la clase de fondo según el rol
+        this.setFondoClase(); 
       } else {
         const alert = await this.alertController.create({
           header: 'Error',
@@ -62,7 +62,7 @@ export class InicioPage implements OnInit {
       await alert.present();
     }
   }
-
+  // Función para el archivo scss, cambiar el fondo dependiendo del rol del usuario
   setFondoClase() {
     switch (this.rol) {
       case 'estudiante':
@@ -78,33 +78,10 @@ export class InicioPage implements OnInit {
         this.fondoClase = 'fondo';
     }
   }
-
-  async escanearQR() {
-    try {
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: false,
-        resultType: CameraResultType.DataUrl,
-      });
-  
-      if (image && image.dataUrl) {
-        const base64Image = image.dataUrl;
-        console.log('Imagen capturada:', base64Image);
-      }
-    } catch (error) {
-      console.error('Error abriendo la cámara:', error);
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'No se pudo abrir la cámara.',
-        buttons: ['OK']
-      });
-      await alert.present();
-    }
-  }
-
+  // Redirección a la página de usuarios para el rol de administrador
   async paginaUsuarios() {
     const userRole = this.authService.getRolUsuario();
-    console.log('Rol de usuario en paginaUsuarios:', userRole); // Log adicional
+    console.log('Rol de usuario en paginaUsuarios:', userRole);
   
     if (userRole === 'administrador') {
       this.router.navigate(['/usuarios']);
@@ -113,7 +90,7 @@ export class InicioPage implements OnInit {
       this.router.navigate(['/acceso-denegado']);
     }
   }
-
+  // Redirección para la página de Asignatura1 para el rol profesor
   async navegarAsignatura1() {
     const userRole = this.authService.getRolUsuario();
     console.log('Rol de usuario en navegarAsignatura1:', userRole);
@@ -125,6 +102,7 @@ export class InicioPage implements OnInit {
       this.router.navigate(['/acceso-denegado']);
     }
   }
+  // Redirección para la página de Asignatura2 para el rol profesor
   async navegarAsignatura2() {
     const userRole = this.authService.getRolUsuario();
     console.log('Rol de usuario en navegarAsignatura2:', userRole);
@@ -136,6 +114,7 @@ export class InicioPage implements OnInit {
       this.router.navigate(['/acceso-denegado']);
     }
   }
+  // Redirección para la página de Asignatura3 para el rol profesor
   async navegarAsignatura3() {
     const userRole = this.authService.getRolUsuario();
     console.log('Rol de usuario en navegarAsignatura3:', userRole);
@@ -147,6 +126,7 @@ export class InicioPage implements OnInit {
       this.router.navigate(['/acceso-denegado']);
     }
   }
+  // Redirección para la página de Asignatura4 para el rol profesor
   async navegarAsignatura4() {
     const userRole = this.authService.getRolUsuario();
     console.log('Rol de usuario en navegarAsignatura4:', userRole);
@@ -158,6 +138,7 @@ export class InicioPage implements OnInit {
       this.router.navigate(['/acceso-denegado']);
     }
   }
+  // Redirección para la página de Asignatura1 para el rol estudiante
   async navegarEstudianteAsignatura1() {
     const userRole = this.authService.getRolUsuario();
     console.log('Rol de usuario en estudiante/asignatura1:', userRole);
@@ -169,6 +150,7 @@ export class InicioPage implements OnInit {
       this.router.navigate(['/acceso-denegado']);
     }
   }
+  // Redirección para la página de Asignatura2 para el rol estudiante
   async navegarEstudianteAsignatura2() {
     const userRole = this.authService.getRolUsuario();
     console.log('Rol de usuario en estudiante/asignatura2:', userRole);
@@ -180,6 +162,7 @@ export class InicioPage implements OnInit {
       this.router.navigate(['/acceso-denegado']);
     }
   }
+  // Redirección para la página de Asignatura3 para el rol estudiante
   async navegarEstudianteAsignatura3() {
     const userRole = this.authService.getRolUsuario();
     console.log('Rol de usuario en estudiante/asignatura3:', userRole);
@@ -191,6 +174,7 @@ export class InicioPage implements OnInit {
       this.router.navigate(['/acceso-denegado']);
     }
   }
+  // Redirección para la página de Asignatura4 para el rol estudiante
   async navegarEstudianteAsignatura4() {
     const userRole = this.authService.getRolUsuario();
     console.log('Rol de usuario en estudiante/asignatura4:', userRole);

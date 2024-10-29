@@ -10,7 +10,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  // Send base64 image to API for decoding
+  // Enviar imagen en base64 para decodificarla en la API
   readQrCode(imageData: string): Observable<any> {
     const formData = new FormData();
     const blob = this.dataURItoBlob(imageData);
@@ -19,7 +19,7 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/read-qr-code/`, formData);
   }
 
-  // Generate a QR code from text or URL
+  // Generar un código qr por un texto o URL
   generateQrCode(data: string): Observable<Blob> {
     const url = `${this.apiUrl}/create-qr-code/?data=${encodeURIComponent(data)}&size=200x200`;
     return this.http.get(url, { responseType: 'blob' });

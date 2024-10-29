@@ -34,9 +34,8 @@ export class StorageService {
 
   // Obtener lista de usuarios
   async getUsuarios(): Promise<{ nombre: string, contrasena: string, rol: string }[]> {
-    // Usa Ionic Storage para obtener la lista de usuarios
     const usuarios = await this._storage?.get('usuarios');
-    return usuarios || []; // Retorna un array vacío si no hay usuarios
+    return usuarios || []; 
   }
   
   // Obtener contraseña de un usuario
@@ -65,32 +64,25 @@ export class StorageService {
 
   // Reemplazar la contraseña de un usuario existente
   async updateContrasena(nombre: string, nuevaContrasena: string): Promise<boolean> {
-    // Recupera la lista de usuarios actualizada
     let usuarios = await this.getUsuarios();
-  
-    // Verifica si se obtuvieron usuarios correctamente
+
     if (!usuarios || usuarios.length === 0) {
       return false;
     }
-  
-    // Encuentra el índice del usuario que coincide con el nombre dado
+
     const usuarioIndex = usuarios.findIndex(u => u.nombre === nombre);
-  
-    // Si el usuario existe, actualiza su contraseña
+
     if (usuarioIndex !== -1) {
       usuarios[usuarioIndex].contrasena = nuevaContrasena;
       
-      // Guarda la lista de usuarios actualizada en el almacenamiento
       await this._storage?.set('usuarios', usuarios);
       
-      // Actualiza también la contraseña en la sesión actual si el usuario está logueado
       const usuarioActual = await this._storage?.get('usuarioActual');
       if (usuarioActual && usuarioActual.nombre === nombre) {
         usuarioActual.contrasena = nuevaContrasena;
         await this._storage?.set('usuarioActual', usuarioActual);
       }
       
-      // Verificación adicional (opcional) para confirmar el cambio
       const updatedUsuarios = await this._storage?.get('usuarios');
       console.log(updatedUsuarios);
   
@@ -109,7 +101,6 @@ export class StorageService {
       usuarios[usuarioIndex] = { nombre: nuevoNombre, contrasena: nuevaContrasena, rol: nuevoRol };
       await this._storage?.set('usuarios', usuarios);
 
-      // Actualiza el usuario actual si está logueado
       const usuarioActual = await this._storage?.get('usuarioActual');
       if (usuarioActual && usuarioActual.nombre === nombreActual) {
         usuarioActual.nombre = nuevoNombre;

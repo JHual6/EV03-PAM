@@ -13,6 +13,7 @@ export class Asignatura4Page implements OnInit {
 
   ngOnInit() { }
 
+  // Función para generar un código QR a partir de un texto 
   generateQrCode(inputText: any) {
     const text = String(inputText.value || ''); 
     if (!text) {

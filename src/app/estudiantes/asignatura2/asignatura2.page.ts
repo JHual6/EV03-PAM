@@ -16,6 +16,7 @@ export class Asignatura2Page implements OnInit {
 
   ngOnInit() {
   }
+  // Función para escanear los códigos QR
   async escanearQR() {
     try {
 

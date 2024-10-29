@@ -1,5 +1,5 @@
 ion-toolbar {
-    --background: rgb(120, 112, 124) !important; /* Aplica el fondo negro */
+    --background: rgb(120, 112, 124) !important;
 }
 .bienvenida{
     margin-top: 30px;
@@ -57,10 +57,10 @@ ion-toolbar {
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
         padding: 10px 20px;
         color: #fff;
-        background: linear-gradient(to right, #058d00, #000000); // Cambia los colores si lo deseas
+        background: linear-gradient(to right, #058d00, #000000); 
         border: 2px solid #058d00;
         border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); // Sombra para mayor profundidad
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
         text-align: center;
     }
 }

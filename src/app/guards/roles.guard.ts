@@ -14,7 +14,7 @@ export class RolesGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    const userRole = 'admin'; // Esto debería venir de tu servicio de autenticación
+    const userRole = 'admin'; 
     const allowedRoles = route.data['allowedRoles'] as Array<string>;
 
     console.log('Rol de usuario:', userRole);
