@@ -8,6 +8,7 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
@@ -25,6 +26,7 @@ const db = mysql.createPool({
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  
 });
 
 // Probar conexión con la base de datos
@@ -340,9 +342,4 @@ app.get('/asignatura/:id', (req, res) => {
   
       res.json(results[0]); // Devuelve la información de la asignatura
   });
-});  
-
-// Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+}); 
