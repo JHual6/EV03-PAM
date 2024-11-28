@@ -1,17 +1,16 @@
 {
-  "name": "RegistrAPP",
+  "name": "registrapp",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
-"scripts": {
-  "ng": "ng",
-  "start": "ng serve",    
-  "start-backend": "node server.js",  
-  "build": "ng build",
-  "watch": "ng build --watch --configuration development",
-  "test": "ng test",
-  "lint": "ng lint"
-},
+  "scripts": {
+    "start": "node server.js",
+    "ng": "ng",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "lint": "ng lint"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.0.0",
@@ -76,5 +75,8 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.4.0"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "main": "karma.conf.js",
+  "keywords": [],
+  "license": "ISC"
 }
