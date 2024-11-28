@@ -11,7 +11,7 @@ describe('NoExistePage', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Debería ser creado', () => {
     expect(component).toBeTruthy();
   });
 });

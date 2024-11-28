@@ -32,52 +32,16 @@ const routes: Routes = [
     data: { allowedRoles: ['admin'] }
   },
   {
-    path: 'asignatura1',
+    path: 'asignatura/:id',
     data: { allowedRolesp: ['profesor']},  
     canActivate: [AutenticacionGuard, rolprofesorGuard],
-    loadChildren: () => import('./profesores/asignatura1/asignatura1.module').then( m => m.Asignatura1PageModule)
+    loadChildren: () => import('./profesores/asignatura/asignatura.module').then( m => m.AsignaturaPageModule)
   },
   {
-    path: 'asignatura2',
-    data: { allowedRolesp: ['profesor']},  
-    canActivate: [AutenticacionGuard, rolprofesorGuard],
-    loadChildren: () => import('./profesores/asignatura2/asignatura2.module').then( m => m.Asignatura2PageModule)
-  },
-  {
-    path: 'asignatura3',
-    data: { allowedRolesp: ['profesor']},  
-    canActivate: [AutenticacionGuard, rolprofesorGuard],
-    loadChildren: () => import('./profesores/asignatura3/asignatura3.module').then( m => m.Asignatura3PageModule)
-  },
-  {
-    path: 'asignatura4',
-    data: { allowedRolesp: ['profesor']},  
-    canActivate: [AutenticacionGuard, rolprofesorGuard],
-    loadChildren: () => import('./profesores/asignatura4/asignatura4.module').then( m => m.Asignatura4PageModule)
-  },
-  {
-    path: 'estudiante/asignatura1',
+    path: 'asignatura/:id_asignatura/:id_estudiante',
     data: { allowedRolesp: ['estudiante']},  
     canActivate: [AutenticacionGuard, rolestudianteGuard],
-    loadChildren: () => import('./estudiantes/asignatura1/asignatura1.module').then( m => m.Asignatura1PageModule)
-  },
-  {
-    path: 'estudiante/asignatura2',
-    data: { allowedRolesp: ['estudiante']},  
-    canActivate: [AutenticacionGuard, rolestudianteGuard],
-    loadChildren: () => import('./estudiantes/asignatura2/asignatura2.module').then( m => m.Asignatura2PageModule)
-  },
-  {
-    path: 'estudiante/asignatura3',
-    data: { allowedRolesp: ['estudiante']},  
-    canActivate: [AutenticacionGuard, rolestudianteGuard],
-    loadChildren: () => import('./estudiantes/asignatura3/asignatura3.module').then( m => m.Asignatura3PageModule)
-  },
-  {
-    path: 'estudiante/asignatura4',
-    data: { allowedRolesp: ['estudiante']},  
-    canActivate: [AutenticacionGuard, rolestudianteGuard],
-    loadChildren: () => import('./estudiantes/asignatura4/asignatura4.module').then( m => m.Asignatura4PageModule)
+    loadChildren: () => import('./estudiantes/asignatura/asignatura.module').then( m => m.AsignaturaPageModule)
   },
   {
     path: '**',

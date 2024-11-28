@@ -90,14 +90,72 @@ ion-toolbar {
     --color: white !important;
     width: 90% !important;
 }
-.botones-asignaturas{
+::ng-deep ion-button.boton-asignatura {
+    --background: none;
+    --color: #ffffff; /* Cambiar el color del texto */
+    padding: 0;
+}
+.rol-mensaje-bienv{
+    margin-top: 2rem;
+}
+.estudiantes-seccion{
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+}
+.nombre_asignatura{
+    margin-bottom: 2rem;
+}
+.asignatura-card{
+    margin-bottom: 2rem;
+}
+.spinner-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.spinner-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-spinner {
+    width: 100px;  
+    height: 100px;
+}
+
+.spinner-text {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+.spinner-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    ion-button{
-        color: white;
-        --background: #058d00;
-        width: 80%;
-        margin-bottom: 1rem;
+    text-align: center;
+    h1{
+        font-weight: bold;
+        font-size: 2.2rem;
+        margin: 40px 0 20px 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
+        padding: 10px 20px;
+        color: #fff;
+        background: linear-gradient(to right, #6d008b, #000000); 
+        border: 2px solid #6d008b;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+        text-align: center;
     }
+}
+mat-progress-spinner{
+    width: 200px !important;
+    height: 200px !important;
 }

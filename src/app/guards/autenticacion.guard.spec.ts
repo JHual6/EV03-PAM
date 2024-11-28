@@ -1,17 +1,45 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AutenticacionGuard } from './autenticacion.guard'; 
+import { AutenticacionService } from '../servicios/autenticacion.service';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
-import { autenticacionGuard } from './autenticacion.guard';
-
-describe('autenticacionGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => autenticacionGuard(...guardParameters));
+describe('AutenticacionGuard', () => {
+  let guard: AutenticacionGuard;
+  let authService: jasmine.SpyObj<AutenticacionService>;
+  let router: jasmine.SpyObj<Router>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    const authServiceMock = jasmine.createSpyObj('AutenticacionService', ['getLogueado']);
+    const routerMock = jasmine.createSpyObj('Router', ['navigate']);
+
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      providers: [
+        AutenticacionGuard,
+        { provide: AutenticacionService, useValue: authServiceMock },
+        { provide: Router, useValue: routerMock }
+      ]
+    });
+
+    guard = TestBed.inject(AutenticacionGuard);
+    authService = TestBed.inject(AutenticacionService) as jasmine.SpyObj<AutenticacionService>;
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
   });
 
-  it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+  it('Debería crearse', () => {
+    expect(guard).toBeTruthy();
+  });
+
+  it('Debería habilitar las rutas si el usuario se loguea', () => {
+    authService.getLogueado.and.returnValue(true); 
+    expect(guard.canActivate()).toBeTrue();
+  });
+
+  it('Debería redirigir si el usuario no es logueado', () => {
+    authService.getLogueado.and.returnValue(false); 
+    guard.canActivate();
+    expect(router.navigate).toHaveBeenCalledWith(['ingreso']);
   });
 });

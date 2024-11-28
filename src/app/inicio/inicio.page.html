@@ -7,51 +7,68 @@
 <ion-content [fullscreen]="true" [ngClass]="fondoClase">
   <div class="bienvenida">
     <label>Bienvenido</label>
-    <br>
+    <br />
     <label class="nombre" for="username">{{ username }}</label>
-    <div *ngIf="rol === 'administrador'">
-      <br>
+    <div *ngIf="rol === 'administrador'" class="rol-mensaje-bienv">
+      <br />
       <label>¿Qué desea realizar hoy?</label>
     </div>
-    <div *ngIf="rol === 'profesor'">
-      <br>
+    <div *ngIf="rol === 'profesor'" class="rol-mensaje-bienv">
+      <br />
       <label>Asignaturas impartidas:</label>
     </div>
-    <div *ngIf="rol === 'estudiante'">
+    <div *ngIf="rol === 'estudiante'" class="rol-mensaje-bienv">
       <label>Sus asignaturas:</label>
     </div>
   </div>
 
-  <div class="spinner-grid" *ngIf="rol === 'estudiante'">
-    <div class="spinner-container" (click)="navegarEstudianteAsignatura1()">
-      <h5>Asignatura 1</h5>
-      <p>90%</p>
-      <mat-progress-spinner mode="determinate" [value]="90" color="accent"></mat-progress-spinner>
+  <!-- Estudiante -->
+  <div class="estudiantes-seccion" *ngIf="rol === 'estudiante'">
+    <div *ngIf="asignaturasE && asignaturasE.length > 0; else noAsignaturas">
+      <div *ngFor="let asignatura of asignaturasE" class="asignatura-card">
+        <h3 class="nombre_asignatura">{{ asignatura.nombre_asignatura }} ({{ asignatura.siglas_asignatura }}-00{{ asignatura.seccion_asignatura }}{{ asignatura.modalidad_asignatura }})</h3>        
+        <div class="spinner-wrapper" (click)="irEstudianteAsignatura(asignatura.id_asignatura, asignatura.usuario_estudiante)">
+          <mat-progress-spinner 
+            class="custom-spinner" 
+            mode="determinate" 
+            [value]="asignatura.porcentaje_asistencia">
+          </mat-progress-spinner>
+          <div class="spinner-text">{{ asignatura.porcentaje_asistencia }}%</div>
+          <p>Asistencias: {{ asignatura.count_asistencias }} de {{ asignatura.count_total_asistencias }}</p>
+        </div>
+      </div>
     </div>
-    <div class="spinner-container" (click)="navegarEstudianteAsignatura2()">
-      <h5>Asignatura 2</h5>
-      <p>80%</p>
-      <mat-progress-spinner mode="determinate" [value]="80" color="accent"></mat-progress-spinner>
-    </div>
-    <div class="spinner-container" (click)="navegarEstudianteAsignatura3()">
-      <h5>Asignatura 3</h5>
-      <p>85%</p>
-      <mat-progress-spinner mode="determinate" [value]="85" color="accent"></mat-progress-spinner>
-    </div>
-    <div class="spinner-container" (click)="navegarEstudianteAsignatura4()">
-      <h5>Asignatura 4</h5>
-      <p>70%</p>
-      <mat-progress-spinner mode="determinate" [value]="70" color="warn"></mat-progress-spinner>
-    </div>
+  
+    <!-- Si no hay asignaturas -->
+    <ng-template #noAsignaturas>
+      <p>No se encontraron asignaturas asociadas al estudiante.</p>
+    </ng-template>
   </div>
 
+  <!-- Profesor -->
   <div class="botones-asignaturas" *ngIf="rol === 'profesor'">
-    <ion-button (click)="navegarAsignatura1()" expand="full">Asignatura 1</ion-button>
-    <ion-button (click)="navegarAsignatura2()" expand="full">Asignatura 2</ion-button>
-    <ion-button (click)="navegarAsignatura3()" expand="full">Asignatura 3</ion-button>
-    <ion-button (click)="navegarAsignatura4()" expand="full">Asignatura 4</ion-button>
+    <div *ngIf="asignaturasP && asignaturasP.length > 0; else noData">
+      <p *ngFor="let asignatura of asignaturasP">
+        <ion-button
+          (click)="verAsignatura(asignatura.id_asignatura, asignatura.id_profesor)"
+          class="boton-asignatura"
+          expand="full"
+          [ngStyle]="{
+            'background-image': 'linear-gradient(to right, #' + asignatura.color_asignatura + ', #' + asignatura.color_seccion_asignatura + ')',
+            color: getTextColor(asignatura.color_asignatura)
+          }"
+        >
+          {{ asignatura.nombre_asignatura }} - {{ asignatura.siglas_asignatura }}-00{{ asignatura.seccion_asignatura
+          }}{{ asignatura.modalidad_asignatura }}
+        </ion-button>
+      </p>
+    </div>
+    <ng-template #noData>
+      <p>No se encontraron asignaturas asociadas al profesor.</p>
+    </ng-template>
   </div>
 
+  <!-- Administrador -->
   <div *ngIf="rol === 'administrador'" class="boton-container">
     <ion-button expand="full" (click)="paginaUsuarios()" class="boton-administrar" style="border-radius: 20px;">
       Administrar usuarios

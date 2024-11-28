@@ -1,17 +1,34 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { RolesGuard } from './roles.guard';
+import { AutenticacionService } from '../servicios/autenticacion.service';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
-import { rolesGuard } from './roles.guard';
-
-describe('rolesGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => rolesGuard(...guardParameters));
+describe('RolesGuard', () => {
+  let guard: RolesGuard;
+  let authService: jasmine.SpyObj<AutenticacionService>;
+  let router: jasmine.SpyObj<Router>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    const authServiceMock = jasmine.createSpyObj('AutenticacionService', ['getLogueado']);
+    const routerMock = jasmine.createSpyObj('Router', ['navigate', 'createUrlTree']);
+
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      providers: [
+        RolesGuard,
+        { provide: AutenticacionService, useValue: authServiceMock },
+        { provide: Router, useValue: routerMock }
+      ]
+    });
+
+    guard = TestBed.inject(RolesGuard);
+    authService = TestBed.inject(AutenticacionService) as jasmine.SpyObj<AutenticacionService>;
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
   });
 
-  it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+  it('Debería ser creado', () => {
+    expect(guard).toBeTruthy();
   });
 });

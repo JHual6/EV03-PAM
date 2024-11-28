@@ -59,5 +59,7 @@ export class IngresoPage implements OnInit {
       await this.storageService.addUsuario('admin1', 'admin123', 'administrador');
     }
   }
-
+  // async basedatos() {
+  //   this.router.navigate(['/basedatos']);
+  // }
 }
