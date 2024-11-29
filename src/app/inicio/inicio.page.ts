@@ -8,6 +8,8 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { StorageService } from '../servicios/storage.service';
 import { AutenticacionService } from '../servicios/autenticacion.service';
 import { DatabaseService } from '../servicios/database.service';
+import { FirestoneMensajeService } from '../servicios/firestone-mensaje.service';
+
 
 // Tipo para las asignaturas
 type Asignatura = {
@@ -49,10 +51,15 @@ export class InicioPage implements OnInit {
     private authService: AutenticacionService,
     private router: Router,
     private databaseService: DatabaseService,
+    private firestoneMensajeService: FirestoneMensajeService
   ) {}
 
   // Función para inicializar la página
   ngOnInit() {
+    
+    this.firestoneMensajeService.requestPermission();
+    this.firestoneMensajeService.receiveMessage();
+
     this.route.queryParams.subscribe(params => {
       if (params['username']) {
         this.username = params['username'];

@@ -16,10 +16,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent], 
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, MatProgressSpinnerModule, MatButtonModule, MatIconModule, BrowserAnimationsModule, IonicStorageModule.forRoot(), HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, MatProgressSpinnerModule, MatButtonModule, MatIconModule, BrowserAnimationsModule, IonicStorageModule.forRoot(), HttpClientModule, AngularFireModule.initializeApp(environment.firebase), AngularFireMessagingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, provideAnimationsAsync(), BarcodeScanner],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

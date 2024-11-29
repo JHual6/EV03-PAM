@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DatabaseService {
-  private baseUrl = 'http://localhost:4000'; // Cambia esta URL si es necesario
+  private baseUrl = 'https://app-4f43c21f-d289-4bc7-b067-5a5679944ef4.cleverapps.io'; // Cambia esta URL si es necesario
 
   constructor(private http: HttpClient) {}
 
