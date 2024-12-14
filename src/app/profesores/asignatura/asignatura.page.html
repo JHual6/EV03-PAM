@@ -40,8 +40,7 @@
   </div>
 
   <!-- Mostrar el QR generado -->
-  <div *ngIf="codigoQrClase">
-    <h3>Código QR Generado:</h3>
+  <div *ngIf="codigoQrClase" class="qr-code-container">
     <img [src]="codigoQrClase" alt="Código QR" />
   </div>
 

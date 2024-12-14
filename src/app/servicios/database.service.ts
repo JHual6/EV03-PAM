@@ -90,4 +90,24 @@ export class DatabaseService {
   insertarClase(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/insertClase`, data);
   }
+  // Obtener estudiantes por ID de asignatura
+  getEstudiantesPorAsignatura(idAsignatura: number): Observable<any> {
+    const url = `${this.baseUrl}/asignaturas/${idAsignatura}/estudiantes`;
+    return this.http.get<any>(url);
+  }
+  // Insertar una nueva asistencia en el servidor
+  insertarAsistencia(data: {
+    id_clase: number;
+    id_estudiante: number;
+    asistencia: boolean;
+    fecha_asistencia: string;
+  }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/insert/asistencia`, data);
+  }
+  // Obtener clases por fecha
+  getClasesPorFecha(fecha: string): Observable<any> {
+    const url = `${this.baseUrl}/clases/fecha/${fecha}`;
+    return this.http.get<any>(url);
+  }
 }
+

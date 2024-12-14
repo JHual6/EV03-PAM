@@ -93,11 +93,9 @@ export class AsignaturaPage implements OnInit {
      this.databaseservice.insertarClase(data).subscribe(
      (response: any) => {
        console.log(response);
-       alert('Clase insertada correctamente con ID: ' + response.id_clase);
      },
      (error) => {
        console.error('Error al insertar la clase:', error);
-       alert('Error al insertar la clase');
      }
    );
   }

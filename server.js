@@ -357,3 +357,59 @@ app.post('/insertClase', (req, res) => {
     res.status(200).json({ message: 'Clase insertada correctamente', id_clase: result.insertId });
   });
 });
+
+// Nueva ruta para obtener los datos con la consulta solicitada
+app.get('/asignaturas/:id_asignatura/estudiantes', (req, res) => {
+  const idAsignatura = req.params.id_asignatura;
+
+  const query = `
+    SELECT *
+    FROM asignatura
+    INNER JOIN clases ON asignatura.id_asignatura = clases.id_asignatura
+    INNER JOIN asistencia ON clases.id_clase = asistencia.id_clase
+    INNER JOIN estudiantes ON estudiantes.id_estudiante = asistencia.id_estudiante
+    WHERE asignatura.id_asignatura = ?
+    GROUP BY estudiantes.id_estudiante
+  `;
+
+  db.query(query, [idAsignatura], (err, results) => {
+    if (err) {
+      console.error('Error al ejecutar la consulta:', err);
+      res.status(500).json({ error: 'Error en el servidor' });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
+  // Ruta para insertar datos en la tabla 'asistencia'
+app.post('/insert/asistencia', (req, res) => {
+  const { id_clase, id_estudiante, asistencia, fecha_asistencia } = req.body;
+
+  const query = `
+    INSERT INTO asistencia (id_clase, id_estudiante, asistencia, fecha_asistencia)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  db.query(query, [id_clase, id_estudiante, asistencia, fecha_asistencia], (err, result) => {
+    if (err) {
+      console.error('Error al insertar en asistencia:', err);
+      res.status(500).json({ error: 'Error al insertar los datos en asistencia' });
+    } else {
+      res.status(201).json({ message: 'Datos insertados correctamente', id_asistencia: result.insertId });
+    }
+  });
+});
+
+// Ruta para obtener clases por fecha
+app.get('/clases/fecha/:fecha', async (req, res) => {
+  const { fecha } = req.params;
+  const query = 'SELECT * FROM clases WHERE fecha_clase = ?';
+
+  try {
+    const [rows] = await connection.query(query, [fecha]);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error('Error al obtener clases por fecha:', error);
+    res.status(500).json({ error: 'Error al obtener clases por fecha' });
+  }
+});
