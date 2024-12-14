@@ -15,10 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; img-src 'self' data:; script-src 'self';"
-  );
+  res.setHeader('Content-Security-Policy', "default-src 'self'; img-src 'self' data:; script-src 'self';");
   next();
 });
 
