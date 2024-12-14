@@ -401,17 +401,23 @@ app.post('/insert/asistencia', (req, res) => {
 });
 
 // Ruta para obtener clases por fecha
-app.get('/clases/fecha/:fecha', async (req, res) => {
-  const { fecha } = req.params;
+app.get('/clases/fecha/:fecha', (req, res) => {
+  const fechaClase = req.params.fecha;
+  console.log('Fecha recibida:', fechaClase);
+
   const query = 'SELECT * FROM clases WHERE fecha_clase = ?';
 
-  console.log('Fecha recibida:', fecha);
+  connection.query(query, [fechaClase], (err, results) => {
+    if (err) {
+      console.error('Error en la consulta SQL:', err.sqlMessage || err);
+      res.status(500).json({
+        error: 'Error al obtener clases por fecha',
+        detalles: err.sqlMessage || err,
+      });
+      return;
+    }
 
-  try {
-    const [rows] = await connection.query(query, [fecha]);
-    res.status(200).json(rows);
-  } catch (error) {
-    console.error('Error al obtener clases por fecha:', error);
-    res.status(500).json({ error: 'Error al obtener clases por fecha' });
-  }
+    console.log('Resultados obtenidos:', results);
+    res.json(results);
+  });
 });
