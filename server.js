@@ -343,3 +343,17 @@ app.get('/asignatura/:id', (req, res) => {
       res.json(results[0]); // Devuelve la información de la asignatura
   });
 }); 
+app.post('/insertClase', (req, res) => {
+    const { id_asignatura, fecha_clase, codigoqr_clase } = req.body;
+  const query = `
+    INSERT INTO clases (id_asignatura, fecha_clase, codigoqr_clase)
+    VALUES (?, ?, ?)
+  `;
+  db.query(query, [id_asignatura, fecha_clase, codigoqr_clase], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error al insertar la clase' });
+    }
+    res.status(200).json({ message: 'Clase insertada correctamente', id_clase: result.insertId });
+  });
+});

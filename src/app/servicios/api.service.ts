@@ -20,9 +20,9 @@ export class ApiService {
   }
 
   // Generar un código qr por un texto o URL
-  generateQrCode(data: string): Observable<Blob> {
+  generateQrCode(data: string): Promise<string> {
     const url = `${this.apiUrl}/create-qr-code/?data=${encodeURIComponent(data)}&size=200x200`;
-    return this.http.get(url, { responseType: 'blob' });
+    return Promise.resolve(url);
   }
 
   private dataURItoBlob(dataURI: string): Blob {

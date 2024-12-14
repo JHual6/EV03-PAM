@@ -86,4 +86,8 @@ export class DatabaseService {
       `${this.baseUrl}/asignatura-clases-asistencia?idProfesor=${idProfesor}&idAsignatura=${idAsignatura}`
     );
   }
+  // Insertar una clase en el servidor
+  insertarClase(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/insertClase`, data);
+  }
 }

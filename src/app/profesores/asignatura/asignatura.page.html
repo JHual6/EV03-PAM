@@ -33,15 +33,16 @@
 
   <!-- Generación del QR -->
   <div class="qr-generator">
-    <ion-input #inputText placeholder="Ingrese la fecha"></ion-input>
-    <ion-button class="boton-generar-qr" expand="full" (click)="generateQrCode(inputText)">
+    <ion-input [(ngModel)]="fechaClase" type="date" placeholder="Selecciona la fecha"></ion-input>
+    <ion-button class="boton-generar-qr" expand="full" (click)="generateQrCode()">
       Generar QR
     </ion-button>
   </div>
 
   <!-- Mostrar el QR generado -->
-  <div *ngIf="qrCodeData" class="qr-code-container">
-    <img [src]="qrCodeData" alt="Código QR generado" />
+  <div *ngIf="codigoQrClase">
+    <h3>Código QR Generado:</h3>
+    <img [src]="codigoQrClase" alt="Código QR" />
   </div>
 
 </ion-content>

@@ -14,6 +14,8 @@ export class AsignaturaPage implements OnInit {
   idProfesor: string | null = null;
   asignatura: any;
   porcentajeAsistencia: number = 0; // Variable para almacenar el porcentaje de asistencia
+  fechaClase: string = ''; // Fecha seleccionada en el input
+  codigoQrClase: string = ''; // Código QR generado
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private databaseservice: DatabaseService) {}
 
@@ -67,20 +69,37 @@ export class AsignaturaPage implements OnInit {
       }
     });
   }
-  
 
-  // Método para generar el código QR
-  generateQrCode(inputText: any) {
-    const text = String(inputText.value || '');
-    if (!text) {
-      console.error('No se proporcionó texto para generar el QR');
+  // Generar el código QR
+  async generateQrCode() {
+    if (!this.fechaClase) {
+      alert('Por favor, ingresa una fecha válida.');
       return;
     }
 
-    this.apiService.generateQrCode(text).subscribe(blob => {
-      const url = URL.createObjectURL(blob);
-      this.qrCodeData = url;
-    });
+    // Genera el código QR basado en la fecha
+    this.codigoQrClase = await this.apiService.generateQrCode(this.fechaClase);
+
+    // Inserta la clase en el servidor
+    this.insertarClase();
+  }
+  // Función para insertar los datos en el servidor
+  insertarClase() {
+   const data = {
+     id_asignatura: this.idAsignatura,
+     fecha_clase: this.fechaClase,
+     codigoqr_clase: this.codigoQrClase,
+   };
+     this.databaseservice.insertarClase(data).subscribe(
+     (response: any) => {
+       console.log(response);
+       alert('Clase insertada correctamente con ID: ' + response.id_clase);
+     },
+     (error) => {
+       console.error('Error al insertar la clase:', error);
+       alert('Error al insertar la clase');
+     }
+   );
   }
   getTextColor(color: string): string {
     // Convertimos el color hexadecimal en valores RGB
