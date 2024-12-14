@@ -405,11 +405,17 @@ app.get('/clases/fecha/:fecha', async (req, res) => {
   const { fecha } = req.params;
   const query = 'SELECT * FROM clases WHERE fecha_clase = ?';
 
+  const fechaClase = req.params.fecha;
+  console.log('Fecha recibida:', fechaClase);
+
   try {
     const [rows] = await connection.query(query, [fecha]);
     res.status(200).json(rows);
   } catch (error) {
-    console.error('Error al obtener clases por fecha:', error);
-    res.status(500).json({ error: 'Error al obtener clases por fecha' });
+    if (err) {
+      console.error('Error en la consulta SQL:', err.sqlMessage || err);
+      res.status(500).json({ error: 'Error al obtener clases por fecha', details: err.sqlMessage || err });
+      return;
+    }
   }
 });
