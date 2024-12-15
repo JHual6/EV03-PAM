@@ -14,13 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const helmet = require('helmet');
-
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
 
 // Configuración de la base de datos
 const db = mysql.createPool({
