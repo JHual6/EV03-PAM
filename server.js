@@ -410,33 +410,31 @@ app.post('/insert/asistencia', (req, res) => {
 
 // Ruta para obtener clases por fecha
 app.get('/clases/fecha/:fecha', (req, res) => {
-  let fechaClase = req.params.fecha; // Fecha recibida desde la URL
-  console.log('Fecha recibida:', fechaClase);
+  const fechaClase = req.params.fecha;
 
-  // Validar y transformar la fecha usando moment.js
-  if (!moment(fechaClase, 'YYYY-MM-DD', true).isValid()) {
-    return res.status(400).json({
-      error: 'Formato de fecha inválido. Use YYYY-MM-DD.',
-    });
+  // Verificar el formato de la fecha (YYYY-MM-DD)
+  const esValido = /^\d{4}-\d{2}-\d{2}$/.test(fechaClase);
+  if (!esValido) {
+    return res.status(400).json({ error: 'Formato de fecha inválido. Use YYYY-MM-DD.' });
   }
 
-  // Convertir la fecha a un formato válido para SQL
-  fechaClase = moment(fechaClase, 'YYYY-MM-DD').format('YYYY-MM-DD');
-  console.log('Fecha transformada:', fechaClase);
+  // Si el formato es válido, convertir la fecha a un objeto Date
+  const fechaObj = new Date(fechaClase);
 
-  // Consulta SQL
+  // Consulta para seleccionar solo id_clase, id_asignatura y fecha_clase
   const query = 'SELECT id_clase, id_asignatura, fecha_clase FROM clases WHERE fecha_clase = ?';
 
-  connection.query(query, [fechaClase], (err, results) => {
+  connection.query(query, [fechaObj], (err, results) => {
     if (err) {
       console.error('Error en la consulta SQL:', err.sqlMessage || err);
-      return res.status(500).json({
+      res.status(500).json({
         error: 'Error al obtener clases por fecha',
         detalles: err.sqlMessage || err,
       });
+      return;
     }
 
     console.log('Resultados obtenidos:', results);
-    res.json(results); // Respuesta con los resultados
+    res.json(results); // Enviar solo las columnas seleccionadas
   });
 });
