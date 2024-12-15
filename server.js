@@ -412,14 +412,13 @@ app.post('/insert/asistencia', (req, res) => {
 app.get('/clases/fecha/:fecha', (req, res) => {
   const fechaClase = req.params.fecha;
 
-  // Verificar el formato de la fecha (YYYY-MM-DD)
-  const esValido = /^\d{4}-\d{2}-\d{2}$/.test(fechaClase);
-  if (!esValido) {
+  // Verificar el formato de la fecha usando moment.js
+  if (!moment(fechaClase, 'YYYY-MM-DD', true).isValid()) {
     return res.status(400).json({ error: 'Formato de fecha inválido. Use YYYY-MM-DD.' });
   }
 
-  // Si el formato es válido, convertir la fecha a un objeto Date
-  const fechaObj = new Date(fechaClase);
+  // Si el formato es válido, convertir la fecha a un objeto Date usando moment.js
+  const fechaObj = moment(fechaClase).toDate();
 
   // Consulta para seleccionar solo id_clase, id_asignatura y fecha_clase
   const query = 'SELECT id_clase, id_asignatura, fecha_clase FROM clases WHERE fecha_clase = ?';
