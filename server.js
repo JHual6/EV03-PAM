@@ -12,7 +12,13 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(express.json());
 app.use(bodyParser.json());
-
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; img-src 'self' data:;"
+  );
+  next();
+});
 
 // Configuración de la base de datos
 const db = mysql.createPool({
