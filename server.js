@@ -414,7 +414,8 @@ app.get('/clases/fecha/:fecha', (req, res) => {
   const fechaClase = req.params.fecha;
   console.log('Fecha recibida:', fechaClase);
 
-  const query = 'SELECT * FROM clases WHERE fecha_clase = ?';
+  // Consulta para seleccionar solo id_clase, id_asignatura y fecha_clase
+  const query = 'SELECT id_clase, id_asignatura, fecha_clase FROM clases WHERE fecha_clase = ?';
 
   connection.query(query, [fechaClase], (err, results) => {
     if (err) {
@@ -427,7 +428,6 @@ app.get('/clases/fecha/:fecha', (req, res) => {
     }
 
     console.log('Resultados obtenidos:', results);
-    // Enviar los resultados directamente al cliente
-    res.json(results);
+    res.json(results); // Enviar solo las columnas seleccionadas
   });
 });

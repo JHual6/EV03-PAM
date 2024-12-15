@@ -108,6 +108,6 @@ export class DatabaseService {
   getClasesPorFecha(fecha: string): Observable<any> {
     const url = `${this.baseUrl}/clases/fecha/${fecha}`;
     return this.http.get<any>(url);
-  }
+  }  
 }
 
