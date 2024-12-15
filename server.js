@@ -11,19 +11,13 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const helmet = require('helmet');
 
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'none'"],
-        imgSrc: ["'self'", "data:"],
-      },
-    },
+    contentSecurityPolicy: false,
   })
 );
 
