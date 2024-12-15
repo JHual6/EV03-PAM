@@ -10,8 +10,6 @@ const helmet = require('helmet');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-const cspPolicy = "default-src 'self'; font-src 'self' <URL>; script-src 'self'; style-src 'self'";
-
 // Middleware
 app.use(express.json());
 app.use(bodyParser.json());
@@ -22,10 +20,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-
-app.use(helmet.contentSecurityPolicy({
-  directives: cspPolicy
-}));
 
 // Configuración de la base de datos
 const db = mysql.createPool({
