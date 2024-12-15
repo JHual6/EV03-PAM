@@ -406,20 +406,32 @@ app.get('/clases/fecha/:fecha', (req, res) => {
   const fechaClase = req.params.fecha;
   console.log('Fecha recibida:', fechaClase);
 
-  // Consulta para seleccionar solo id_clase, id_asignatura y fecha_clase
+  // Validar el formato de la fecha (YYYY-MM-DD)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaClase)) {
+    return res.status(400).json({
+      error: 'Formato de fecha inválido. Use YYYY-MM-DD.',
+    });
+  }
+
   const query = 'SELECT id_clase, id_asignatura, fecha_clase FROM clases WHERE fecha_clase = ?';
 
   connection.query(query, [fechaClase], (err, results) => {
     if (err) {
       console.error('Error en la consulta SQL:', err.sqlMessage || err);
-      res.status(500).json({
+      return res.status(500).json({
         error: 'Error al obtener clases por fecha',
         detalles: err.sqlMessage || err,
       });
-      return;
+    }
+
+    // Verificar si hay resultados
+    if (results.length === 0) {
+      return res.status(404).json({
+        mensaje: 'No se encontraron clases para la fecha especificada',
+      });
     }
 
     console.log('Resultados obtenidos:', results);
-    res.json(results); // Enviar solo las columnas seleccionadas
+    res.json(results);
   });
 });
