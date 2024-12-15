@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const helmet = require('helmet');
@@ -409,23 +410,55 @@ app.post('/insert/asistencia', (req, res) => {
 });
 
 // Ruta para obtener clases por fecha
-app.get('/clases/fecha/:fecha', (req, res) => {
+app.get('/clases/fecha/:fecha', async (req, res) => {
   const fechaClase = req.params.fecha;
   console.log('Fecha recibida:', fechaClase);
 
   const query = 'SELECT * FROM clases WHERE fecha_clase = ?';
 
-  connection.query(query, [fechaClase], (err, results) => {
+  connection.query(query, [fechaClase], async (err, results) => {
     if (err) {
       console.error('Error en la consulta SQL:', err.sqlMessage || err);
-      res.status(500).json({
+      return res.status(500).json({
         error: 'Error al obtener clases por fecha',
         detalles: err.sqlMessage || err,
       });
-      return;
     }
 
-    console.log('Resultados obtenidos:', results);
-    res.json(results);
+    try {
+      // Procesar cada registro y transformar `codigoqr_clase` a JSON
+      const processedResults = await Promise.all(
+        results.map(async (clase) => {
+          if (clase.codigoqr_clase) {
+            try {
+              const response = await axios.get(clase.codigoqr_clase);
+              return {
+                ...clase,
+                codigoqr_clase: response.data, // Incluir el contenido JSON
+              };
+            } catch (qrError) {
+              console.error(
+                `Error al obtener datos de ${clase.codigoqr_clase}:`,
+                qrError.message
+              );
+              return {
+                ...clase,
+                codigoqr_clase: null, // Devolver nulo si hay un error
+              };
+            }
+          }
+          return clase; // Si no hay `codigoqr_clase`, devuélvelo tal cual
+        })
+      );
+
+      console.log('Resultados procesados:', processedResults);
+      res.json(processedResults);
+    } catch (processError) {
+      console.error('Error al procesar los resultados:', processError);
+      res.status(500).json({
+        error: 'Error al procesar los datos de las clases',
+        detalles: processError.message,
+      });
+    }
   });
 });
