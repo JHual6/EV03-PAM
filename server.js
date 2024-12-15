@@ -5,6 +5,7 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const moment = require('moment');
+const helmet = require('helmet');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -20,6 +21,15 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    fontSrc: ["'self'", 'https://app-4f43c21f-d289-4bc7-b067-5a5679944ef4.cleverapps.io'], // Agrega el dominio permitido
+    scriptSrc: ["'self'"],
+    styleSrc: ["'self'"]
+  }
+}));
 
 // Configuración de la base de datos
 const db = mysql.createPool({
