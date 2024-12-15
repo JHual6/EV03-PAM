@@ -10,6 +10,7 @@ const helmet = require('helmet');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+const cspPolicy = "default-src 'self'; font-src 'self' <URL>; script-src 'self'; style-src 'self'";
 
 // Middleware
 app.use(express.json());
@@ -23,12 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use(helmet.contentSecurityPolicy({
-  directives: {
-    defaultSrc: ["'self'"],
-    fontSrc: ["'self'", 'https://app-4f43c21f-d289-4bc7-b067-5a5679944ef4.cleverapps.io'], // Agrega el dominio permitido
-    scriptSrc: ["'self'"],
-    styleSrc: ["'self'"]
-  }
+  directives: cspPolicy
 }));
 
 // Configuración de la base de datos
