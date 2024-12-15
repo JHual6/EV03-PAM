@@ -409,16 +409,21 @@ app.post('/insert/asistencia', (req, res) => {
 
 // Ruta para obtener clases por fecha
 app.get('/clases/fecha/:fecha', (req, res) => {
-  const fechaClase = req.params.fecha;
+  let fechaClase = req.params.fecha; // Fecha recibida desde la URL
   console.log('Fecha recibida:', fechaClase);
 
-  // Validar el formato de la fecha (YYYY-MM-DD)
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaClase)) {
+  // Validar y transformar la fecha usando moment.js
+  if (!moment(fechaClase, 'YYYY-MM-DD', true).isValid()) {
     return res.status(400).json({
       error: 'Formato de fecha inválido. Use YYYY-MM-DD.',
     });
   }
 
+  // Convertir la fecha a un formato válido para SQL
+  fechaClase = moment(fechaClase, 'YYYY-MM-DD').format('YYYY-MM-DD');
+  console.log('Fecha transformada:', fechaClase);
+
+  // Consulta SQL
   const query = 'SELECT id_clase, id_asignatura, fecha_clase FROM clases WHERE fecha_clase = ?';
 
   connection.query(query, [fechaClase], (err, results) => {
@@ -430,14 +435,7 @@ app.get('/clases/fecha/:fecha', (req, res) => {
       });
     }
 
-    // Verificar si hay resultados
-    if (results.length === 0) {
-      return res.status(404).json({
-        mensaje: 'No se encontraron clases para la fecha especificada',
-      });
-    }
-
     console.log('Resultados obtenidos:', results);
-    res.json(results);
+    res.json(results); // Respuesta con los resultados
   });
 });
