@@ -188,4 +188,16 @@ export class InicioPage implements OnInit {
       this.router.navigate(['/acceso-denegado']);
     }
   }
+  // Ir a la página de asignaturas para el administrador
+  async paginaAsignaturas() {
+    const userRole = this.authService.getRolUsuario();
+    console.log('Rol de usuario en paginaUsuarios:', userRole);
+
+    if (userRole === 'administrador') {
+      this.router.navigate(['/asignatura']);
+    } else {
+      console.error('No tienes permisos de administrador');
+      this.router.navigate(['/acceso-denegado']);
+    }
+  }
 }

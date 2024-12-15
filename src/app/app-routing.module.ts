@@ -32,6 +32,12 @@ const routes: Routes = [
     data: { allowedRoles: ['admin'] }
   },
   {
+    path: 'asignatura',
+    loadChildren: () => import('./administrador/asignatura/asignatura.module').then( m => m.AsignaturaPageModule),
+    canActivate: [AutenticacionGuard, RolesGuard],
+    data: { allowedRoles: ['admin'] }
+  },
+  {
     path: 'asignatura/:id',
     data: { allowedRolesp: ['profesor']},  
     canActivate: [AutenticacionGuard, rolprofesorGuard],
