@@ -433,7 +433,7 @@ app.post('/insertAsignatura', (req, res) => {
   });
 });
 // Actualizar asignatura (UPDATE)
-app.put('/update/asignaturas/:id_asignatura', (req, res) => {
+app.put('asignaturas/:id_asignatura', (req, res) => {
   const { id_asignatura } = req.params; // ID de la asignatura a actualizar
   const { id_profesor } = req.body; // Nuevo ID del profesor
 
@@ -464,7 +464,7 @@ app.put('/update/asignaturas/:id_asignatura', (req, res) => {
 
 
 // Eliminar asignatura (DELETE)
-app.delete('/delete/asignaturas/:id_asignatura', (req, res) => {
+app.delete('asignaturas/:id_asignatura', (req, res) => {
   const { id_asignatura } = req.params; // ID de la asignatura a eliminar
 
   const query = `
