@@ -440,6 +440,10 @@ app.put('/update/asignaturas/:id_asignatura', (req, res) => {
   console.log('Solicitud PUT recibida para ID:', id_asignatura);
   console.log('Datos enviados:', req.body);
 
+  if (!id_profesor) {
+    return res.status(400).json({ error: 'Nuevo ID del profesor es requerido' });
+  }
+
   const query = `
     UPDATE asignatura
     SET id_profesor = ?
@@ -451,9 +455,13 @@ app.put('/update/asignaturas/:id_asignatura', (req, res) => {
       console.error('Error al actualizar asignatura:', err);
       return res.status(500).json({ error: 'Error al actualizar asignatura' });
     }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Asignatura no encontrada' });
+    }
     res.json({ message: 'Asignatura actualizada correctamente' });
   });
 });
+
 
 // Eliminar asignatura (DELETE)
 app.delete('/delete/asignaturas/:id_asignatura', (req, res) => {
