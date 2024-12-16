@@ -1,4 +1,4 @@
-require('dotenv').config({ path: 'server.env' });
+require('dotenv').config(); 
 
 const express = require('express');
 const mysql = require('mysql2');
@@ -21,22 +21,14 @@ app.use((req, res, next) => {
   );
   next();
 });
-
 // Configuración de la base de datos
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-    host     : process.env.MYSQL_ADDON_HOST,
-    database : process.env.MYSQL_ADDON_DB,
-    user     : process.env.MYSQL_ADDON_USER,
-    password : process.env.MYSQL_ADDON_PASSWORD
+const connection = mysql.createConnection({
+  host: process.env.MYSQL_ADDON_HOST,
+  database: process.env.MYSQL_ADDON_DB,
+  user: process.env.MYSQL_ADDON_USER,
+  password: process.env.MYSQL_ADDON_PASSWORD
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-  
-});
-
-// Probar conexión con la base de datos
 db.getConnection((err, connection) => {
   if (err) {
     console.error('Error conectando a la base de datos:', err);
