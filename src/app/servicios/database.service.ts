@@ -113,15 +113,6 @@ export class DatabaseService {
   insertAsignatura(asignatura: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/insertAsignatura`, asignatura);
   }
-    // Actualizar asignatura (UPDATE)
-  updateAsignatura(id_asignatura: number, id_profesor: number): Observable<any> {
-    const url = `${this.baseUrl}/asignaturas/${id_asignatura}`;
-    return this.http.put(url, { id_profesor });
-  }
-  // Eliminar asignatura (DELETE)
-  deleteAsignatura(id_asignatura: number): Observable<any> {
-    const url = `${this.baseUrl}/asignaturas/${id_asignatura}`;
-    return this.http.delete(url);
-  }
+
 }
 

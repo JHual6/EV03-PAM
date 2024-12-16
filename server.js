@@ -432,54 +432,6 @@ app.post('/insertAsignatura', (req, res) => {
       });
   });
 });
-// Actualizar asignatura (UPDATE)
-app.put('asignaturas/:id_asignatura', (req, res) => {
-  const { id_asignatura } = req.params; // ID de la asignatura a actualizar
-  const { id_profesor } = req.body; // Nuevo ID del profesor
-
-  console.log('Solicitud PUT recibida para ID:', id_asignatura);
-  console.log('Datos enviados:', req.body);
-
-  if (!id_profesor) {
-    return res.status(400).json({ error: 'Nuevo ID del profesor es requerido' });
-  }
-
-  const query = `
-    UPDATE asignatura
-    SET id_profesor = ?
-    WHERE id_asignatura = ?;
-  `;
-
-  db.query(query, [id_profesor, id_asignatura], (err, result) => {
-    if (err) {
-      console.error('Error al actualizar asignatura:', err);
-      return res.status(500).json({ error: 'Error al actualizar asignatura' });
-    }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'Asignatura no encontrada' });
-    }
-    res.json({ message: 'Asignatura actualizada correctamente' });
-  });
-});
-
-
-// Eliminar asignatura (DELETE)
-app.delete('asignaturas/:id_asignatura', (req, res) => {
-  const { id_asignatura } = req.params; // ID de la asignatura a eliminar
-
-  const query = `
-    DELETE FROM asignatura
-    WHERE id_asignatura = ?;
-  `;
-
-  db.query(query, [id_asignatura], (err, result) => {
-    if (err) {
-      console.error('Error al eliminar asignatura:', err);
-      return res.status(500).json({ error: 'Error al eliminar asignatura' });
-    }
-    res.json({ message: 'Asignatura eliminada correctamente' });
-  });
-});
 
 
 
