@@ -109,10 +109,6 @@ export class DatabaseService {
     const url = `${this.baseUrl}/clases/fecha/${fecha}`;
     return this.http.get<any>(url);
   }  
-  // Método para insertar una asignatura
-  insertAsignatura(asignatura: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/insertAsignatura`, asignatura);
-  }
 
 }
 

@@ -31,7 +31,8 @@ export class AsignaturaPage implements OnInit {
     });
   }
 
-  // Agregar asignatura
+   // Agregar asignatura
+  // Agregar asignatura con alerta
   async agregarAsignatura() {
     console.log('Agregar nueva asignatura');
   }
