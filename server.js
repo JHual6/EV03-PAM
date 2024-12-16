@@ -437,6 +437,9 @@ app.put('/update/asignaturas/:id_asignatura', (req, res) => {
   const { id_asignatura } = req.params; // ID de la asignatura a actualizar
   const { id_profesor } = req.body; // Nuevo ID del profesor
 
+  console.log('Solicitud PUT recibida para ID:', req.params.id_asignatura);
+  console.log('Datos enviados:', req.body);
+
   const query = `
     UPDATE asignatura
     SET id_profesor = ?

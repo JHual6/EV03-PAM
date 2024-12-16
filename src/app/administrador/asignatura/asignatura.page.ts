@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/servicios/database.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-asignatura',
@@ -9,7 +10,10 @@ import { DatabaseService } from 'src/app/servicios/database.service';
 export class AsignaturaPage implements OnInit {
   asignaturas: any[] = [];
 
-  constructor(private databaseservice: DatabaseService) {}
+  constructor(
+    private databaseservice: DatabaseService,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
     this.cargarAsignaturas();
@@ -28,40 +32,93 @@ export class AsignaturaPage implements OnInit {
   }
 
    // Agregar asignatura
-   agregarAsignatura() {
-    const nuevaAsignatura = {
-      id_profesor: 1,
-      nombre_asignatura: 'Matemáticas',
-      siglas_asignatura: 'MAT101',
-      color_asignatura: 'Azul',
-      color_seccion_asignatura: 'Rojo',
-      seccion_asignatura: 'A',
-      modalidad_asignatura: 'Presencial',
-    };
-  
-    this.databaseservice.insertAsignatura(nuevaAsignatura).subscribe(
-      (response) => {
-        console.log(response.message);
-        alert('Asignatura agregada correctamente');
-      },
-      (error) => console.error('Error al agregar asignatura', error)
-    );
+  // Agregar asignatura con alerta
+  async agregarAsignatura() {
+    const alert = await this.alertController.create({
+      header: 'Agregar Asignatura',
+      inputs: [
+        { name: 'id_profesor', type: 'number', placeholder: 'ID Profesor' },
+        { name: 'nombre_asignatura', type: 'text', placeholder: 'Nombre Asignatura' },
+        { name: 'siglas_asignatura', type: 'text', placeholder: 'Siglas Asignatura' },
+        { name: 'color_asignatura', type: 'text', placeholder: 'Color Asignatura' },
+        { name: 'color_seccion_asignatura', type: 'text', placeholder: 'Color Sección' },
+        { name: 'seccion_asignatura', type: 'text', placeholder: 'Sección Asignatura' },
+        { name: 'modalidad_asignatura', type: 'text', placeholder: 'Modalidad' },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Guardar',
+          handler: (data) => {
+            const nuevaAsignatura = {
+              id_profesor: data.id_profesor,
+              nombre_asignatura: data.nombre_asignatura,
+              siglas_asignatura: data.siglas_asignatura,
+              color_asignatura: data.color_asignatura,
+              color_seccion_asignatura: data.color_seccion_asignatura,
+              seccion_asignatura: data.seccion_asignatura,
+              modalidad_asignatura: data.modalidad_asignatura,
+            };
+
+            this.databaseservice.insertAsignatura(nuevaAsignatura).subscribe(
+              (response) => {
+                console.log(response.message);
+                this.alertController.create({
+                  header: 'Éxito',
+                  message: 'Asignatura agregada correctamente',
+                  buttons: ['OK']
+                }).then(alert => alert.present());
+              },
+              (error) => console.error('Error al agregar asignatura', error)
+            );
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
-  
-  // Editar asignatura
-  editarAsignatura(id_asignatura: number) {
-    const id_profesor = 2; // Nuevo ID del profesor
-    this.databaseservice.updateAsignatura(id_asignatura, id_profesor).subscribe(
-      (response) => {
-        console.log(response.message);
-        alert('Asignatura actualizada correctamente');
-      },
-      (error) => console.error('Error al actualizar asignatura', error)
-    );
+  // Editar asignatura con alerta
+  async editarAsignatura(asignatura: any) {
+    const id_asignatura = asignatura.id_asignatura;
+    const alert = await this.alertController.create({
+      header: 'Editar Asignatura',
+      inputs: [
+        { name: 'id_profesor', type: 'number', placeholder: 'Nuevo ID Profesor' },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Actualizar',
+          handler: (data) => {
+            const id_profesor = data.id_profesor;
+
+            this.databaseservice.updateAsignatura(id_asignatura, id_profesor).subscribe(
+              (response) => {
+                console.log(response.message);
+                this.alertController.create({
+                  header: 'Éxito',
+                  message: 'Asignatura actualizada correctamente',
+                  buttons: ['OK']
+                }).then(alert => alert.present());
+              },
+              (error) => console.error('Error al actualizar asignatura', error)
+            );
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
-  
   // Eliminar asignatura
-  eliminarAsignatura(id_asignatura: number) {
+  eliminarAsignatura(asignatura: any) {
+    const id_asignatura = asignatura.id_asignatura;
     if (confirm('¿Estás seguro de eliminar la asignatura?')) {
       this.databaseservice.deleteAsignatura(id_asignatura).subscribe(
         (response) => {
