@@ -409,29 +409,6 @@ app.post('/insert/asistencia', (req, res) => {
   });
 });
 
-// Endpoint para insertar una asignatura
-app.post('/insertAsignatura', (req, res) => {
-  const { id_profesor, nombre_asignatura, siglas_asignatura, color_asignatura, color_seccion_asignatura, seccion_asignatura, modalidad_asignatura } = req.body;
-  
-  const query = `
-    INSERT INTO asignatura (id_profesor, nombre_asignatura, siglas_asignatura, color_asignatura, 
-                            color_seccion_asignatura, seccion_asignatura, modalidad_asignatura)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `;
-
-  db.query(query, 
-    [id_profesor, nombre_asignatura, siglas_asignatura, color_asignatura, color_seccion_asignatura, seccion_asignatura, modalidad_asignatura], 
-    (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Error al insertar la asignatura' });
-      }
-      res.status(200).json({ 
-        message: 'Asignatura insertada correctamente', 
-        id_asignatura: result.insertId 
-      });
-  });
-});
 
 
 
