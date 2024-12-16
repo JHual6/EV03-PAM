@@ -409,3 +409,116 @@ app.post('/insert/asistencia', (req, res) => {
   });
 });
 
+// Endpoint para insertar una asignatura
+app.post('/insertAsignatura', (req, res) => {
+  const { id_profesor, nombre_asignatura, siglas_asignatura, color_asignatura, color_seccion_asignatura, seccion_asignatura, modalidad_asignatura } = req.body;
+  
+  const query = `
+    INSERT INTO asignatura (id_profesor, nombre_asignatura, siglas_asignatura, color_asignatura, 
+                            color_seccion_asignatura, seccion_asignatura, modalidad_asignatura)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(query, 
+    [id_profesor, nombre_asignatura, siglas_asignatura, color_asignatura, color_seccion_asignatura, seccion_asignatura, modalidad_asignatura], 
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error al insertar la asignatura' });
+      }
+      res.status(200).json({ 
+        message: 'Asignatura insertada correctamente', 
+        id_asignatura: result.insertId 
+      });
+  });
+});
+// Actualizar asignatura (UPDATE)
+app.put('asignaturas/:id_asignatura', (req, res) => {
+  const { id_asignatura } = req.params; // ID de la asignatura a actualizar
+  const { id_profesor } = req.body; // Nuevo ID del profesor
+
+  console.log('Solicitud PUT recibida para ID:', id_asignatura);
+  console.log('Datos enviados:', req.body);
+
+  if (!id_profesor) {
+    return res.status(400).json({ error: 'Nuevo ID del profesor es requerido' });
+  }
+
+  const query = `
+    UPDATE asignatura
+    SET id_profesor = ?
+    WHERE id_asignatura = ?;
+  `;
+
+  db.query(query, [id_profesor, id_asignatura], (err, result) => {
+    if (err) {
+      console.error('Error al actualizar asignatura:', err);
+      return res.status(500).json({ error: 'Error al actualizar asignatura' });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Asignatura no encontrada' });
+    }
+    res.json({ message: 'Asignatura actualizada correctamente' });
+  });
+});
+
+
+// Eliminar asignatura (DELETE)
+app.delete('asignaturas/:id_asignatura', (req, res) => {
+  const { id_asignatura } = req.params; // ID de la asignatura a eliminar
+
+  const query = `
+    DELETE FROM asignatura
+    WHERE id_asignatura = ?;
+  `;
+
+  db.query(query, [id_asignatura], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar asignatura:', err);
+      return res.status(500).json({ error: 'Error al eliminar asignatura' });
+    }
+    res.json({ message: 'Asignatura eliminada correctamente' });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Ruta para obtener clases por fecha
+app.get('/clases/fecha/:fecha', (req, res) => {
+  const fechaClase = req.params.fecha;
+
+  // Verificar el formato de la fecha usando moment.js
+  if (!moment(fechaClase, 'YYYY-MM-DD', true).isValid()) {
+    return res.status(400).json({ error: 'Formato de fecha inválido. Use YYYY-MM-DD.' });
+  }
+
+  // Si el formato es válido, convertir la fecha a un objeto Date usando moment.js
+  const fechaObj = moment(fechaClase).toDate();
+
+  // Consulta para seleccionar solo id_clase, id_asignatura y fecha_clase
+  const query = 'SELECT id_clase, id_asignatura, fecha_clase FROM clases WHERE fecha_clase = ?';
+
+  connection.query(query, [fechaObj], (err, results) => {
+    if (err) {
+      console.error('Error en la consulta SQL:', err.sqlMessage || err);
+      res.status(500).json({
+        error: 'Error al obtener clases por fecha',
+        detalles: err.sqlMessage || err,
+      });
+      return;
+    }
+
+    console.log('Resultados obtenidos:', results);
+    res.json(results); // Enviar solo las columnas seleccionadas
+  });
+});

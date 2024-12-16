@@ -83,50 +83,10 @@ export class AsignaturaPage implements OnInit {
   }
   // Editar asignatura con alerta
   async editarAsignatura(asignatura: any) {
-    const id_asignatura = asignatura.id_asignatura;
-    const alert = await this.alertController.create({
-      header: 'Editar Asignatura',
-      inputs: [
-        { name: 'id_profesor', type: 'number', placeholder: 'Nuevo ID Profesor' },
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Actualizar',
-          handler: (data) => {
-            const id_profesor = data.id_profesor;
-
-            this.databaseservice.updateAsignatura(id_asignatura, id_profesor).subscribe(
-              (response) => {
-                console.log(response.message);
-                this.alertController.create({
-                  header: 'Éxito',
-                  message: 'Asignatura actualizada correctamente',
-                  buttons: ['OK']
-                }).then(alert => alert.present());
-              },
-              (error) => console.error('Error al actualizar asignatura', error)
-            );
-          },
-        },
-      ],
-    });
-    await alert.present();
+    console.log('Editar asignatura:', asignatura);
   }
   // Eliminar asignatura
   eliminarAsignatura(asignatura: any) {
-    const id_asignatura = asignatura.id_asignatura;
-    if (confirm('¿Estás seguro de eliminar la asignatura?')) {
-      this.databaseservice.deleteAsignatura(id_asignatura).subscribe(
-        (response) => {
-          console.log(response.message);
-          alert('Asignatura eliminada correctamente');
-        },
-        (error) => console.error('Error al eliminar asignatura', error)
-      );
-    }
+    console.log('Eliminar asignatura:', asignatura);
   }
 }
