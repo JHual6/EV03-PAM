@@ -432,6 +432,43 @@ app.post('/insertAsignatura', (req, res) => {
       });
   });
 });
+// Actualizar asignatura (UPDATE)
+app.put('/update/asignaturas/:id_asignatura', (req, res) => {
+  const { id_asignatura } = req.params; // ID de la asignatura a actualizar
+  const { id_profesor } = req.body; // Nuevo ID del profesor
+
+  const query = `
+    UPDATE asignatura
+    SET id_profesor = ?
+    WHERE id_asignatura = ?;
+  `;
+
+  db.query(query, [id_profesor, id_asignatura], (err, result) => {
+    if (err) {
+      console.error('Error al actualizar asignatura:', err);
+      return res.status(500).json({ error: 'Error al actualizar asignatura' });
+    }
+    res.json({ message: 'Asignatura actualizada correctamente' });
+  });
+});
+
+// Eliminar asignatura (DELETE)
+app.delete('/delete/asignaturas/:id_asignatura', (req, res) => {
+  const { id_asignatura } = req.params; // ID de la asignatura a eliminar
+
+  const query = `
+    DELETE FROM asignatura
+    WHERE id_asignatura = ?;
+  `;
+
+  db.query(query, [id_asignatura], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar asignatura:', err);
+      return res.status(500).json({ error: 'Error al eliminar asignatura' });
+    }
+    res.json({ message: 'Asignatura eliminada correctamente' });
+  });
+});
 
 
 

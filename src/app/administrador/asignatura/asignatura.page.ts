@@ -27,18 +27,49 @@ export class AsignaturaPage implements OnInit {
     });
   }
 
-  editarAsignatura(asignatura: any) {
-    console.log('Editar asignatura:', asignatura);
-    // Lógica para editar la asignatura
+   // Agregar asignatura
+   agregarAsignatura() {
+    const nuevaAsignatura = {
+      id_profesor: 1,
+      nombre_asignatura: 'Matemáticas',
+      siglas_asignatura: 'MAT101',
+      color_asignatura: 'Azul',
+      color_seccion_asignatura: 'Rojo',
+      seccion_asignatura: 'A',
+      modalidad_asignatura: 'Presencial',
+    };
+  
+    this.databaseservice.insertAsignatura(nuevaAsignatura).subscribe(
+      (response) => {
+        console.log(response.message);
+        alert('Asignatura agregada correctamente');
+      },
+      (error) => console.error('Error al agregar asignatura', error)
+    );
   }
-
-  eliminarAsignatura(asignatura: any) {
-    console.log('Eliminar asignatura:', asignatura);
-    // Lógica para eliminar la asignatura
+  
+  // Editar asignatura
+  editarAsignatura(id_asignatura: number) {
+    const id_profesor = 2; // Nuevo ID del profesor
+    this.databaseservice.updateAsignatura(id_asignatura, id_profesor).subscribe(
+      (response) => {
+        console.log(response.message);
+        alert('Asignatura actualizada correctamente');
+      },
+      (error) => console.error('Error al actualizar asignatura', error)
+    );
   }
-
-  agregarAsignatura() {
-    console.log('Agregar nueva asignatura');
-    // Lógica para agregar una nueva asignatura
+  
+  // Eliminar asignatura
+  eliminarAsignatura(id_asignatura: number) {
+    if (confirm('¿Estás seguro de eliminar la asignatura?')) {
+      this.databaseservice.deleteAsignatura(id_asignatura).subscribe(
+        (response) => {
+          console.log(response.message);
+          alert('Asignatura eliminada correctamente');
+        },
+        (error) => console.error('Error al eliminar asignatura', error)
+      );
+    }
   }
 }
